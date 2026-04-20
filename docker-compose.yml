@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # 1 PMU - Phasor Measurement Unit - critical grid point
+  device-pmu-01:
+    build: ./simulator
+    container_name: device-pmu-01
+    restart: always
+    environment:
+      - DEVICE_ID=device_pmu_01
+      - DEVICE_TYPE=PMU
+      - DEVICE_PROFILE=critical
+      - INTERVAL_MS=100
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  # 1 RTU - Remote Terminal Unit - substation
+  device-rtu-01:
+    build: ./simulator
+    container_name: device-rtu-01
+    restart: always
+    environment:
+      - DEVICE_ID=device_rtu_01
+      - DEVICE_TYPE=RTU
+      - DEVICE_PROFILE=unstable
+      - INTERVAL_MS=500
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  # 8 SMART_METER - residential and commercial meters
+  device-sm-01:
+    build: ./simulator
+    container_name: device-sm-01
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_01
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-02:
+    build: ./simulator
+    container_name: device-sm-02
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_02
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-03:
+    build: ./simulator
+    container_name: device-sm-03
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_03
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-04:
+    build: ./simulator
+    container_name: device-sm-04
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_04
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-05:
+    build: ./simulator
+    container_name: device-sm-05
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_05
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-06:
+    build: ./simulator
+    container_name: device-sm-06
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_06
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-07:
+    build: ./simulator
+    container_name: device-sm-07
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_07
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements
+
+  device-sm-08:
+    build: ./simulator
+    container_name: device-sm-08
+    restart: always
+    environment:
+      - DEVICE_ID=device_sm_08
+      - DEVICE_TYPE=SMART_METER
+      - DEVICE_PROFILE=normal
+      - INTERVAL_MS=2000
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=power_grid/measurements

@@ -13,9 +13,10 @@ INTERVAL_MS = int(os.environ.get("INTERVAL_MS", "1000"))
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
 MQTT_TOPIC = os.environ.get("MQTT_TOPIC", "power_grid/measurements")
-MAX_RECONNECT_ATTEMPTS = 5
+
 
 # Global state
+MAX_RECONNECT_ATTEMPTS = 5
 reconnect_attempts = 0
 client = None
 
