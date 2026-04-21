@@ -4,5 +4,6 @@
 *.cert
 __pycache__/
 .env
+*.crt
 *.pyc
 .DS_Store
