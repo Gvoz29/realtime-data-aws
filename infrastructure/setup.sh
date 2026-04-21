@@ -46,3 +46,49 @@ aws kinesis create-stream \
   --stream-name elektroenergetika-stream \
   --shard-count 1
 
+  echo "Kreiranje IoT Policy..."
+aws iot create-policy \
+  --policy-name PowerGridDevicePolicy \
+  --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "iot:Connect",
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": "iot:Publish",
+        "Resource": "*"
+      }
+    ]
+  }'
+
+  echo "Kreiranje IoT Thing..."
+aws iot create-thing \
+  --thing-name PowerGridSimulator
+
+echo "Kreiranje sertifikata..."
+mkdir -p simulator/certs
+aws iot create-keys-and-certificate \
+  --set-as-active \
+  --certificate-pem-outfile "simulator/certs/certificate.pem" \
+  --public-key-outfile "simulator/certs/public.key" \
+  --private-key-outfile "simulator/certs/private.key"
+
+  echo "Povezivanje sertifikata sa Policy-em i Thing-om..."
+CERT_ARN=$(aws iot list-certificates --query 'certificates[0].certificateArn' --output text)
+
+aws iot attach-policy \
+  --policy-name PowerGridDevicePolicy \
+  --target $CERT_ARN
+
+aws iot attach-thing-principal \
+  --thing-name PowerGridSimulator \
+  --principal $CERT_ARN
+
+echo "Certificate ARN: $CERT_ARN"
+
+echo "IoT Core endpoint:"
+aws iot describe-endpoint --endpoint-type iot:Data-ATS

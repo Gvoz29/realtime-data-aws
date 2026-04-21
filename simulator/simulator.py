@@ -14,6 +14,10 @@ MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
 MQTT_TOPIC = os.environ.get("MQTT_TOPIC", "power_grid/measurements")
 
+# Certificate paths
+CERT_PATH = os.environ.get("CERT_PATH", "/app/certs/certificate.pem")
+KEY_PATH = os.environ.get("KEY_PATH", "/app/certs/private.key")
+CA_PATH = os.environ.get("CA_PATH", "/app/certs/root-CA.crt")
 
 # Global state
 MAX_RECONNECT_ATTEMPTS = 5
@@ -113,7 +117,12 @@ signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
 # MQTT client setup
-client = mqtt.Client()
+client = mqtt.Client(client_id=DEVICE_ID)
+client.tls_set(
+    ca_certs=CA_PATH,
+    certfile=CERT_PATH,
+    keyfile=KEY_PATH
+)
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 

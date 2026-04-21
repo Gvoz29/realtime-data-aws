@@ -6,6 +6,8 @@ services:
     build: ./simulator
     container_name: device-pmu-01
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_pmu_01
       - DEVICE_TYPE=PMU
@@ -20,6 +22,8 @@ services:
     build: ./simulator
     container_name: device-rtu-01
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_rtu_01
       - DEVICE_TYPE=RTU
@@ -34,6 +38,8 @@ services:
     build: ./simulator
     container_name: device-sm-01
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_01
       - DEVICE_TYPE=SMART_METER
@@ -47,6 +53,8 @@ services:
     build: ./simulator
     container_name: device-sm-02
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_02
       - DEVICE_TYPE=SMART_METER
@@ -60,6 +68,8 @@ services:
     build: ./simulator
     container_name: device-sm-03
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_03
       - DEVICE_TYPE=SMART_METER
@@ -73,6 +83,8 @@ services:
     build: ./simulator
     container_name: device-sm-04
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_04
       - DEVICE_TYPE=SMART_METER
@@ -86,6 +98,8 @@ services:
     build: ./simulator
     container_name: device-sm-05
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_05
       - DEVICE_TYPE=SMART_METER
@@ -99,6 +113,8 @@ services:
     build: ./simulator
     container_name: device-sm-06
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_06
       - DEVICE_TYPE=SMART_METER
@@ -112,6 +128,8 @@ services:
     build: ./simulator
     container_name: device-sm-07
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_07
       - DEVICE_TYPE=SMART_METER
@@ -125,6 +143,8 @@ services:
     build: ./simulator
     container_name: device-sm-08
     restart: always
+    volumes:
+      - ./simulator/certs:/app/certs:ro
     environment:
       - DEVICE_ID=device_sm_08
       - DEVICE_TYPE=SMART_METER
