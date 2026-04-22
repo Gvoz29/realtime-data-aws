@@ -11,7 +11,6 @@ services:
     environment:
       - DEVICE_ID=device_pmu_01
       - DEVICE_TYPE=PMU
-      - DEVICE_PROFILE=critical
       - INTERVAL_MS=100
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -27,7 +26,6 @@ services:
     environment:
       - DEVICE_ID=device_rtu_01
       - DEVICE_TYPE=RTU
-      - DEVICE_PROFILE=unstable
       - INTERVAL_MS=500
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -43,7 +41,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_01
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -58,7 +55,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_02
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -73,7 +69,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_03
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -88,7 +83,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_04
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -103,7 +97,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_05
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -118,7 +111,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_06
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -133,7 +125,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_07
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}
@@ -148,7 +139,6 @@ services:
     environment:
       - DEVICE_ID=device_sm_08
       - DEVICE_TYPE=SMART_METER
-      - DEVICE_PROFILE=normal
       - INTERVAL_MS=2000
       - MQTT_BROKER=${MQTT_BROKER}
       - MQTT_PORT=${MQTT_PORT}

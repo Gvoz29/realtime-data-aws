@@ -8,7 +8,6 @@ import paho.mqtt.client as mqtt
 # Environment variables
 DEVICE_ID = os.environ.get("DEVICE_ID", "device_dev_01")
 DEVICE_TYPE = os.environ.get("DEVICE_TYPE", "SMART_METER")
-DEVICE_PROFILE = os.environ.get("DEVICE_PROFILE", "normal")
 INTERVAL_MS = int(os.environ.get("INTERVAL_MS", "1000"))
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
@@ -24,51 +23,74 @@ MAX_RECONNECT_ATTEMPTS = 5
 reconnect_attempts = 0
 client = None
 
-# Anomaly probability by device profile
-ANOMALY_CHANCE = {
-    "critical": 0.40,   # 40% anomaly chance - critical grid point
-    "unstable": 0.20,   # 20% anomaly chance - standard meter
-    "normal": 0.05      # 5%  anomaly chance - peripheral meter
-}
 
 def generate_data():
-    anomaly_chance = ANOMALY_CHANCE.get(DEVICE_PROFILE, 0.05)
-    is_anomaly = random.random() < anomaly_chance
-
-    if is_anomaly:
-        # Voltage outside allowed range (±10% of 230V)
-        voltage = random.choice([
-            round(random.uniform(180, 206), 2),  # too low
-            round(random.uniform(254, 280), 2),  # too high
-        ])
-        # Frequency outside allowed range
-        frequency = random.choice([
-            round(random.uniform(48.0, 49.7), 3),  # too low
-            round(random.uniform(50.3, 52.0), 3),  # too high
-        ])
-        # Poor power factor
-        power_factor = round(random.uniform(0.5, 0.84), 2)
-        # Overcurrent
-        current = round(random.uniform(21, 35), 2)
-    else:
-        # Normal operating conditions
-        voltage = round(random.uniform(220, 240), 2)
-        frequency = round(random.uniform(49.9, 50.1), 3)
-        power_factor = round(random.uniform(0.92, 1.0), 2)
-        current = round(random.uniform(5, 20), 2)
-
-    active_power = round(voltage * current * power_factor, 2)
-
-    return {
+    # Default normal state
+    data = {
         "device_id": DEVICE_ID,
         "device_type": DEVICE_TYPE,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()),
-        "voltage": voltage,
-        "current": current,
-        "frequency": frequency,
-        "power_factor": power_factor,
-        "active_power": active_power
+        "voltage": round(random.uniform(228, 232), 2),
+        "frequency": round(random.uniform(49.98, 50.02), 3),
+        "power_factor": round(random.uniform(0.95, 0.99), 2),
+        "current": round(random.uniform(5, 15), 2)
     }
+
+    chance = random.random()
+
+    if DEVICE_TYPE == "PMU":
+        # PMU - fast (100ms)
+        # 40% dynamic grid oscillations
+        if chance < 0.40:
+            # Small voltage and frequency oscillations
+            data["frequency"] = round(data["frequency"] + random.uniform(-0.15, 0.15), 3)
+            data["voltage"] = round(data["voltage"] + random.uniform(-5, 5), 2)
+        elif chance < 0.55:
+            # Frequency instability - generator dropped off grid
+            data["frequency"] = random.choice([
+                round(random.uniform(48.5, 49.7), 3),  # too low
+                round(random.uniform(50.3, 51.5), 3),  # too high
+            ])
+        elif chance < 0.65:
+            # Voltage dip - heavy load on line
+            data["voltage"] = round(random.uniform(207, 215), 2)
+
+    elif DEVICE_TYPE == "RTU":
+        # RTU - medium (500ms)
+        # 20% serious grid events
+        if chance < 0.08:
+            # Phase loss - transformer fault
+            data["voltage"] = 0
+            data["current"] = 0    # no voltage → no current
+            data["power"] = 0    # no power
+            data["power_factor"] = 0
+        elif chance < 0.15:
+            # High voltage - transformer tap issue
+            data["voltage"] = round(random.uniform(245, 260), 2)
+            data["current"] = round(random.uniform(18, 25), 2)
+        elif chance < 0.20:
+            # Overcurrent - overloaded substation
+            data["current"] = round(random.uniform(22, 35), 2)
+            data["voltage"] = round(data["voltage"] - random.uniform(5, 12), 2)
+            data["power_factor"] = round(random.uniform(0.78, 0.86), 2)
+
+    elif DEVICE_TYPE == "SMART_METER":
+        # SMART_METER - slow (2000ms)
+        # 5% local overload events
+        if chance < 0.03:
+            # Local overload - too many devices
+            data["current"] = round(random.uniform(25, 40), 2)
+            data["voltage"] = round(data["voltage"] - random.uniform(8, 20), 2)
+            data["power_factor"] = round(random.uniform(0.75, 0.85), 2)
+        elif chance < 0.05:
+            # Poor power factor - inductive loads (AC, fridge, motors)
+            data["power_factor"] = round(random.uniform(0.65, 0.82), 2)
+            data["current"] = round(random.uniform(12, 20), 2)
+
+    # Calculate active power based on final values
+    data["active_power"] = round(data["voltage"] * data["current"] * data["power_factor"], 2)
+
+    return data
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -132,7 +154,7 @@ if not connect_with_retry(client, MQTT_BROKER, MQTT_PORT):
 
 client.loop_start()
 
-print(f"[{DEVICE_ID}] Simulator started | Profile: {DEVICE_PROFILE} | Interval: {INTERVAL_MS}ms")
+print(f"[{DEVICE_ID}] Simulator started | Interval: {INTERVAL_MS}ms")
 
 try:
     while True:
