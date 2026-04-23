@@ -62,7 +62,6 @@ def generate_data():
             # Phase loss - transformer fault
             data["voltage"] = 0
             data["current"] = 0    # no voltage → no current
-            data["power"] = 0    # no power
             data["power_factor"] = 0
         elif chance < 0.15:
             # High voltage - transformer tap issue
